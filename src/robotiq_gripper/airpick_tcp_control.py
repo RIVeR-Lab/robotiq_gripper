@@ -162,13 +162,17 @@ class Gripper(object):
             command: the name string of the variable
         """
 
-        ## TO-DO check the respond format
         with self.command_lock:
             cmd = "GET " + command + "\n"
             self.socket.sendall(cmd.encode(Register.ENCODING))
             resp = self.socket.recv(1024)
-        
-        return int(resp)
+        # expect data of the form 'VAR x', where VAR is an echo of the variable name, and X the value
+        # note some special variables (like FLT) may send 2 bytes, instead of an integer. We assume integer here 
+        var_name, value_str = resp.decode(self.ENCODING).split()
+        if var_name != command:
+            raise ValueError("Unexpected response " + str(command) + " does not match '" + command + "'")
+        value = int(value_str)
+        return value
 
     def _is_ack(self, resp):
         return resp == b"ack"
