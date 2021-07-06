@@ -168,7 +168,7 @@ class Gripper(object):
             resp = self.socket.recv(1024)
         # expect data of the form 'VAR x', where VAR is an echo of the variable name, and X the value
         # note some special variables (like FLT) may send 2 bytes, instead of an integer. We assume integer here 
-        var_name, value_str = resp.decode(self.ENCODING).split()
+        var_name, value_str = resp.decode(Register.ENCODING).split()
         if var_name != command:
             raise ValueError("Unexpected response " + str(command) + " does not match '" + command + "'")
         value = int(value_str)
