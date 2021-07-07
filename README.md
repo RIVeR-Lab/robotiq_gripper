@@ -1,13 +1,14 @@
 # robotiq_gripper
 The repository for robotiq gripper drivers in RIVeR lab
 
-The driver is written in a standalone python script without dependence on ROS (only some loggin functions are used, will update later) and a ROS wrapper is provided.
+## Airpick
+The airpick driver is written in a standalone python script without dependence on ROS (only some loggin functions are used, will update later) and a ROS wrapper is provided.
 
 Currently, all the low-level parameters for `grip` and `release` are pre-configured for now using the `vacuum_grip()` and `vacuum_release()` function.
 
 If more advanced configuration is needed, use `_req_vacuum_grip_raw` and `_req_vacuum_release_raw` function provided in the `airpick_tcp_control.py`.
 
-## Setup
+### Setup
 
 To integrate this package in your ROS workspace, first download the repos by 
 ```
