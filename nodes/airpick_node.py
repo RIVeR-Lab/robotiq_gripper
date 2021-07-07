@@ -5,8 +5,7 @@ from robotiq_gripper.airpick_tcp_control import Gripper
 from robotiq_gripper.srv import AirpickSimpleControl, AirpickSimpleControlResponse 
 
 class AirpickNode(object):
-    def __init__(self):
-        address = "192.168.0.2"
+    def __init__(self, address):
         self.gripper = Gripper(address)
         
         #ROS services
@@ -24,7 +23,8 @@ class AirpickNode(object):
 
 if __name__=="__main__":
     rospy.init_node("airpick_gripper")
-    ap = AirpickNode()
+    address = "192.168.0.2"
+    ap = AirpickNode(address)
 
     rospy.spin()
 
