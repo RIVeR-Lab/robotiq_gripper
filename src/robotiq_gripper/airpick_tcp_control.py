@@ -61,7 +61,7 @@ class Gripper(object):
         rospy.loginfo("Gripper connection closed")
 
     def vacuum_grip(self):
-        return self.vacuum_grip_raw(False, 60, 40, 3000)
+        return self.vacuum_grip_raw(False, 60, 40, 1000)
 
     def vacuum_grip_raw(self, advanced_mode, max_pressure, min_pressure, timeout):
         """
@@ -101,9 +101,10 @@ class Gripper(object):
         min_pressure = 0
         timeout = 255
 
-        # Reset gripper, clear fault state
-        self._req_set_var("GTO", 0)
-        self._req_set_var("ACT", 1)
+        # Reset gripper, clear fault state.
+        # Because release always happens after grip (theoretically), we don't need to reset the states
+        # self._req_set_var("GTO", 0)
+        # self._req_set_var("ACT", 1)
 
         # Turn on/off advanced mode
         if advanced_mode:
@@ -113,9 +114,9 @@ class Gripper(object):
 
         # Set maximum/minimum pressure and timeout
         cmd_dict = {}
-        cmd_dict['POS'] = self.scale(max_pressure, [0, 100], [100, 0])
-        cmd_dict['FOR'] = self.scale(min_pressure, [0, 100], [100, 0])
-        cmd_dict['SPE'] = self.scale(timeout, [0, 25500], [0, 255])
+        cmd_dict['POS'] = self.scale(max_pressure, [0, 255], [0, 255])
+        cmd_dict['FOR'] = self.scale(min_pressure, [0, 255], [0, 255])
+        cmd_dict['SPE'] = self.scale(timeout, [0, 255], [0, 255])
         self._req_set_vars(cmd_dict)
         self._set_gto_and_wait(1)
 
@@ -123,7 +124,7 @@ class Gripper(object):
             while (self._req_is_object_detected()):
                 self._req_set_vars(cmd_dict)
                 self._set_gto_and_wait(1)
-                time.sleep(0.1)
+                time.sleep(0.5)
         
         return True
 
@@ -148,9 +149,10 @@ class Gripper(object):
         with self.command_lock:
             cmd = "SET"
             for variable, value in cmd_dict.items():
-                cmd += " " + variable + " " + str(value)
+                cmd += " " + variable + " " + str(int(value))
             
             cmd += "\n"
+            rospy.loginfo(f"send command: {cmd}")
             self.socket.sendall(cmd.encode(Register.ENCODING))
             resp = self.socket.recv(1024)
 
@@ -184,7 +186,7 @@ class Gripper(object):
         """
         return self._req_get_var("OBJ")
 
-    def scale(value, rawRange, scaledRange):
+    def scale(self, value, rawRange, scaledRange):
         """
         Copied from URScript implementation to scale the input value
         """

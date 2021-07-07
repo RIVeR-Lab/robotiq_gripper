@@ -11,6 +11,13 @@ if __name__=="__main__":
     address = "192.168.0.2"
     gripper = Gripper(address)
 
+    # print(gripper._req_get_var("ACT"))
+    print(gripper.vacuum_grip())
+
+    rospy.sleep(5)
+
+    print(gripper.vacuum_release())
+
     rospy.spin()
 
 
