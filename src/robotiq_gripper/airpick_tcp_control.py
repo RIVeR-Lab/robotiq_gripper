@@ -152,7 +152,7 @@ class Gripper(object):
                 cmd += " " + variable + " " + str(int(value))
             
             cmd += "\n"
-            rospy.loginfo(f"send command: {cmd}")
+            rospy.logdebug(f"send command: {cmd}")
             self.socket.sendall(cmd.encode(Register.ENCODING))
             resp = self.socket.recv(1024)
 
