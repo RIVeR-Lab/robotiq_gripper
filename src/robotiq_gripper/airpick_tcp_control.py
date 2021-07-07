@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 """ ROS Node to control Robotiq AirPick through URCap """
 # Based on: https://github.com/felixvd/robotiq/blob/56ccac8cffd1e4411ae761351cc5b048c15fa132/robotiq_control/src/robotiq_control/cmodel_urcap.py
 # and: https://dof.robotiq.com/discussion/1962/programming-options-ur16e-2f-85#latest
@@ -5,7 +7,6 @@
 # With this method, we can control the gripper while it's attached to the UR robot.
 # Other options could be MODBUS RTU (Direct USB connection to PC needed), RS-485 Tool communication (Special I/O coupling needed)
 
-#! /usr/bin/env python
 
 import socket 
 import rospy
