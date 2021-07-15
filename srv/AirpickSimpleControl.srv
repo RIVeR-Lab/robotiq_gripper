@@ -1,3 +1,5 @@
 string command
+int8 power
+float32 duration
 ---
 bool success

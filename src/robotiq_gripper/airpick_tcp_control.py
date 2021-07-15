@@ -45,13 +45,13 @@ class Gripper(object):
         """
         Connect the gripper to UR robot at given port exposed by URCap
         """
-        rospy.loginfo(f'Gripper connecting to {host}:{port}') 
+        rospy.loginfo('Gripper connecting to {}:{}'.format(host,port)) 
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.connect((host, port))
             self.socket.settimeout(socket_timeout)
         except OSError as error:
-            rospy.logerr(f"Error connecting to {port}: {error.strerror}")
+            rospy.logerr("Error connecting to {}: {}".format(port, error.strerror))
             exit(-1)
 
         rospy.loginfo("Gripper connected successfully")
@@ -152,7 +152,7 @@ class Gripper(object):
                 cmd += " " + variable + " " + str(int(value))
             
             cmd += "\n"
-            rospy.logdebug(f"send command: {cmd}")
+            rospy.logdebug("send command: {}".format(cmd))
             self.socket.sendall(cmd.encode(Register.ENCODING))
             resp = self.socket.recv(1024)
 
