@@ -163,6 +163,8 @@ class Gripper(object):
         Send socket request to get variable
         params
             command: the name string of the variable
+        return:
+            integer value of the variable
         """
 
         with self.command_lock:
@@ -184,7 +186,11 @@ class Gripper(object):
         """
         Check whether the object is detected
         """
-        return self._req_get_var("OBJ")
+        obj = self._req_get_var("OBJ")
+        if (obj == 1):
+            return True
+        elif (obj == 0 or 3):
+            return False
 
     def scale(self, value, rawRange, scaledRange):
         """
