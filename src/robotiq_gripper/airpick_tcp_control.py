@@ -189,7 +189,7 @@ class Gripper(object):
         obj = self._req_get_var("OBJ")
         if (obj == 1):
             return True
-        elif (obj == 0 or 3):
+        elif (obj == 0 or obj == 3):
             return False
 
     def scale(self, value, rawRange, scaledRange):
